@@ -602,28 +602,68 @@ public enum DotLanguage: String, CaseIterable, Identifiable, Codable {
                     title: "Контроль батареи Mac",
                     prompt: "Проверь процент заряда батареи. Если ниже 20% и зарядка не подключена, предупреди пользователя.",
                     intervalSeconds: 600,
-                    isEnabled: false
+                    isEnabled: true,
+                    autonomyLevel: .full,
+                    category: .hardware
                 ),
                 TaskGoal(
                     title: "Разминка и отдых глаз",
                     prompt: "Напомни пользователю размяться, поморгать и сделать пару глотков воды.",
+                    intervalSeconds: 2700,
+                    isEnabled: true,
+                    autonomyLevel: .full,
+                    category: .wellness
+                ),
+                TaskGoal(
+                    title: "Проактивный веб-дайджест",
+                    prompt: "Search: главные новости технологий и AI сегодня",
+                    intervalSeconds: 7200,
+                    isEnabled: false,
+                    autonomyLevel: .full,
+                    category: .research
+                ),
+                TaskGoal(
+                    title: "Куратор памяти и привычек",
+                    prompt: "Проанализируй диалоги и сохрани важные предпочтения пользователя в долговременную память.",
                     intervalSeconds: 3600,
-                    isEnabled: false
+                    isEnabled: false,
+                    autonomyLevel: .full,
+                    category: .memory
                 )
             ]
         case .chinese:
             return [
                 TaskGoal(
-                    title: "Mac 电池监测",
+                    title: "Mac 电池与硬件监测",
                     prompt: "检查电量百分比。如果低于 20% 且未充电，提醒用户插上电源。",
                     intervalSeconds: 600,
-                    isEnabled: false
+                    isEnabled: true,
+                    autonomyLevel: .full,
+                    category: .hardware
                 ),
                 TaskGoal(
                     title: "久坐与视力休息提醒",
                     prompt: "提醒用户活动身体、眨眼休息并喝一口水。",
+                    intervalSeconds: 2700,
+                    isEnabled: true,
+                    autonomyLevel: .full,
+                    category: .wellness
+                ),
+                TaskGoal(
+                    title: "自主网络快讯研究",
+                    prompt: "Search: 今日前沿科技与人工智能最新资讯",
+                    intervalSeconds: 7200,
+                    isEnabled: false,
+                    autonomyLevel: .full,
+                    category: .research
+                ),
+                TaskGoal(
+                    title: "长期记忆管家",
+                    prompt: "分析近期对话并将重要习惯和偏好存入长期记忆库。",
                     intervalSeconds: 3600,
-                    isEnabled: false
+                    isEnabled: false,
+                    autonomyLevel: .full,
+                    category: .memory
                 )
             ]
         case .japanese:
@@ -632,13 +672,33 @@ public enum DotLanguage: String, CaseIterable, Identifiable, Codable {
                     title: "Mac バッテリー監視",
                     prompt: "バッテリー残量を確認し、20%未満で充電されていない場合はユーザーに警告してください。",
                     intervalSeconds: 600,
-                    isEnabled: false
+                    isEnabled: true,
+                    autonomyLevel: .full,
+                    category: .hardware
                 ),
                 TaskGoal(
                     title: "姿勢とストレッチのリマインダー",
                     prompt: "軽くストレッチし、まばたきをして水分補給するよう促してください。",
+                    intervalSeconds: 2700,
+                    isEnabled: true,
+                    autonomyLevel: .full,
+                    category: .wellness
+                ),
+                TaskGoal(
+                    title: "自律ウェブダイジェスト",
+                    prompt: "Search: 最新のAIおよびテクノロジーのニュース",
+                    intervalSeconds: 7200,
+                    isEnabled: false,
+                    autonomyLevel: .full,
+                    category: .research
+                ),
+                TaskGoal(
+                    title: "パーソナル記憶キュレーター",
+                    prompt: "対話を分析し、ユーザーの好みや重要な情報を長期記憶に保存します。",
                     intervalSeconds: 3600,
-                    isEnabled: false
+                    isEnabled: false,
+                    autonomyLevel: .full,
+                    category: .memory
                 )
             ]
         default:
@@ -647,13 +707,33 @@ public enum DotLanguage: String, CaseIterable, Identifiable, Codable {
                     title: "Mac Battery Sentinel",
                     prompt: "Check battery percentage. If below 20% and not charging, warn the user.",
                     intervalSeconds: 600,
-                    isEnabled: false
+                    isEnabled: true,
+                    autonomyLevel: .full,
+                    category: .hardware
                 ),
                 TaskGoal(
                     title: "Desk Break & Posture Check",
                     prompt: "Remind the user to stretch, blink, and take a sip of water.",
+                    intervalSeconds: 2700,
+                    isEnabled: true,
+                    autonomyLevel: .full,
+                    category: .wellness
+                ),
+                TaskGoal(
+                    title: "Proactive Web Digest",
+                    prompt: "Search: top AI & tech news today",
+                    intervalSeconds: 7200,
+                    isEnabled: false,
+                    autonomyLevel: .full,
+                    category: .research
+                ),
+                TaskGoal(
+                    title: "Memory & Habits Curator",
+                    prompt: "Analyze conversations and save key user preferences into long-term memory.",
                     intervalSeconds: 3600,
-                    isEnabled: false
+                    isEnabled: false,
+                    autonomyLevel: .full,
+                    category: .memory
                 )
             ]
         }

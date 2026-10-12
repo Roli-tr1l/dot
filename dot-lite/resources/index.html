@@ -392,6 +392,8 @@
       <!-- Quick Actions -->
       <div class="tools-bar">
         <button class="tool-btn" id="btnClip" onclick="useClipboard()">📋 Буфер</button>
+        <button class="tool-btn" onclick="requestDigest()">🌐 Дайджест</button>
+        <button class="tool-btn" onclick="showMemory()">🧠 Память</button>
         <button class="tool-btn" id="btnClear" onclick="clearChat()">🗑 Очистить</button>
       </div>
 
@@ -655,6 +657,18 @@ COMMUNICATION STYLE:
       } else {
         navigator.clipboard.readText().then(t => document.getElementById('userInput').value = `Clipboard: "${t.slice(0, 300)}"`);
       }
+    }
+
+    function requestDigest() {
+      const q = currentLang === 'ru' ? 'Подготовь для меня свежий аналитический дайджест главных мировых событий в IT и технологиях за сегодня.' : 'Provide a smart analytical briefing of the latest tech and AI news today.';
+      document.getElementById('userInput').value = q;
+      sendMessage();
+    }
+
+    function showMemory() {
+      const q = currentLang === 'ru' ? 'Расскажи подробно, что ты знаешь обо мне, моих вкусах, стиле и нашем проекте? Что сохранено в твоей памяти?' : 'Tell me what you remember about me, my preferences, and our project from your long-term memory?';
+      document.getElementById('userInput').value = q;
+      sendMessage();
     }
 
     changeLanguage(currentLang);

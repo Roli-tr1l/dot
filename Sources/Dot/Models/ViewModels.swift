@@ -158,10 +158,18 @@ public class SettingsViewModel: ObservableObject {
 public class GoalsViewModel: ObservableObject {
     public static let shared = GoalsViewModel()
 
+    @Published public var selectedTab: Int = 0 // 0: Agents, 1: Activity View, 2: Memory, 3: Autonomy Rules
     @Published public var isAddingNewGoal: Bool = false
     @Published public var newTitle: String = ""
     @Published public var newPrompt: String = ""
+    @Published public var newCategory: GoalCategory = .custom
+    @Published public var newAutonomyLevel: AutonomyLevel = .full
     @Published public var newIntervalMinutes: Double = 15
+
+    // Memory tab state
+    @Published public var isAddingMemory: Bool = false
+    @Published public var newMemoryFact: String = ""
+    @Published public var newMemoryCategory: String = "preferences"
 
     private init() {}
 
@@ -174,7 +182,9 @@ public class GoalsViewModel: ObservableObject {
             title: title,
             prompt: prompt,
             intervalSeconds: newIntervalMinutes * 60,
-            isEnabled: true
+            isEnabled: true,
+            autonomyLevel: newAutonomyLevel,
+            category: newCategory
         )
         Task { @MainActor in
             DotState.shared.goals.append(goal)

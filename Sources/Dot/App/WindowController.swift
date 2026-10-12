@@ -22,7 +22,7 @@ public class WindowController: ObservableObject {
 
     public func setup() {
         let panel = FloatingPanel(
-            contentRect: NSRect(x: 0, y: 0, width: 580, height: 580),
+            contentRect: NSRect(x: 0, y: 0, width: 640, height: 640),
             styleMask: [.borderless, .nonactivatingPanel],
             backing: .buffered,
             defer: false
@@ -45,8 +45,8 @@ public class WindowController: ObservableObject {
         // Position on the right side of primary screen
         if let screen = NSScreen.main {
             let visibleRect = screen.visibleFrame
-            let initialX = round(visibleRect.maxX - 600)
-            let initialY = round(visibleRect.minY + 80)
+            let initialX = round(visibleRect.maxX - 660)
+            let initialY = round(visibleRect.minY + 60)
             panel.setFrameOrigin(NSPoint(x: initialX, y: initialY))
         }
 

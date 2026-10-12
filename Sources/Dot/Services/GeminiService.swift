@@ -61,10 +61,21 @@ public class GeminiService {
             "parts": userParts
         ])
 
+        let memoryContext = await DotMemoryService.shared.getFormattedContext()
         let effectiveSystemPrompt = """
 \(DotConfig.shared.systemPrompt)
 
 \(DotConfig.shared.language.promptInstruction)
+
+\(memoryContext)
+
+AUTONOMOUS CAPABILITIES AVAILABLE:
+- Web Search: You can search current live web data by outputting: <<<SEARCH: your query>>>
+- Memory & Preferences: You can save facts learned about the user by outputting: <<<REMEMBER: fact to remember>>>
+- Mac System Battery: <<<BATTERY>>>
+- Mac Volume: <<<VOLUME: 0-100>>>
+- Shell Execution (safe): <<<EXEC: command>>>
+- Desktop Notification: <<<NOTIFY: Title | Message>>>
 """
 
         let requestBody: [String: Any] = [
@@ -120,6 +131,45 @@ public class GeminiService {
         var processedText = text
         var actionRecord: ActionRecord?
 
+        // Check for Web Search: <<<SEARCH: query>>>
+        if let match = text.range(of: "<<<SEARCH:\\s*([^>]+)>>>", options: .regularExpression) {
+            let searchQuery = text[match]
+                .replacingOccurrences(of: "<<<SEARCH:", with: "")
+                .replacingOccurrences(of: ">>>", with: "")
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+
+            let results = await WebResearchService.shared.search(query: searchQuery)
+            var formattedResults = ""
+            if !results.isEmpty {
+                formattedResults = "\n\n*🌐 Результаты поиска в сети:*\n" + results.prefix(3).map { "• **\($0.title)**: \($0.snippet)" }.joined(separator: "\n")
+            }
+            await ActivityLogService.shared.log(
+                goalTitle: "Веб-поиск",
+                summary: "Поиск в сети: «\(searchQuery)»",
+                fullDetails: formattedResults,
+                type: .research,
+                notificationSent: false
+            )
+            processedText = processedText.replacingCharacters(in: match, with: formattedResults)
+        }
+
+        // Check for Memory saving: <<<REMEMBER: fact>>>
+        if let match = text.range(of: "<<<REMEMBER:\\s*([^>]+)>>>", options: .regularExpression) {
+            let factToRemember = text[match]
+                .replacingOccurrences(of: "<<<REMEMBER:", with: "")
+                .replacingOccurrences(of: ">>>", with: "")
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+
+            await DotMemoryService.shared.addMemory(fact: factToRemember, category: "learned")
+            await ActivityLogService.shared.log(
+                goalTitle: "Долговременная память",
+                summary: "Запомнил факт: «\(factToRemember)»",
+                type: .memory,
+                notificationSent: false
+            )
+            processedText = processedText.replacingCharacters(in: match, with: "\n*(💡 Запомнил: \(factToRemember))*")
+        }
+
         // Check for shell execution: <<<EXEC: cmd>>>
         if let match = text.range(of: "<<<EXEC:\\s*([^>]+)>>>", options: .regularExpression) {
             let commandString = text[match]
@@ -136,6 +186,14 @@ public class GeminiService {
                 isSuccess: isSuccess
             )
 
+            await ActivityLogService.shared.log(
+                goalTitle: "Команда терминала",
+                summary: "Выполнено: `\(commandString)`",
+                fullDetails: output,
+                type: .action,
+                notificationSent: false
+            )
+
             processedText = processedText.replacingCharacters(in: match, with: "\n*Executed `\(commandString)`*\n```\n\(output.trimmingCharacters(in: .whitespacesAndNewlines))\n```")
         }
 
@@ -150,6 +208,14 @@ public class GeminiService {
             let title = parts.first?.trimmingCharacters(in: .whitespacesAndNewlines) ?? "Dot"
             let msg = parts.count > 1 ? parts[1].trimmingCharacters(in: .whitespacesAndNewlines) : title
             SystemService.shared.postNotification(title: title, message: msg)
+
+            await ActivityLogService.shared.log(
+                goalTitle: "Уведомление",
+                summary: "\(title): \(msg)",
+                type: .system,
+                notificationSent: true
+            )
+
             processedText = processedText.replacingCharacters(in: match, with: "")
         }
 
