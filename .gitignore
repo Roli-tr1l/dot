@@ -1,0 +1,42 @@
+# Swift & macOS build artifacts
+.build/
+.swiftpm/
+Packages/
+*.xcodeproj
+*.xcworkspace
+*.dia
+*.swiftdoc
+*.swiftmodule
+*.swiftsourceinfo
+*.abi.json
+
+# Applications & installers
+Dot.app/
+*.dmg
+*.pkg
+*.exe
+*.zip
+*.tar.gz
+*.AppImage
+
+# Node & Cross-platform
+node_modules/
+dist/
+out/
+build/
+.electron/
+
+# Secrets & Local environments
+.env
+.env.local
+*.key
+*.pem
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
