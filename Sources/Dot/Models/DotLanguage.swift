@@ -42,21 +42,21 @@ public enum DotLanguage: String, CaseIterable, Identifiable, Codable {
     public var promptInstruction: String {
         switch self {
         case .russian:
-            return "LANGUAGE INSTRUCTION: You MUST talk, converse, and reply natively in fluent, natural Russian (Русский язык). Use friendly, lively, and culturally natural expressions."
+            return "LANGUAGE & TONE INSTRUCTION: Общайся максимально по-человечески, живо, тепло и с душой! Не будь сухим роботом или шаблоном. Отвечай развёрнуто, подробно, интересно и с реальной пользой. Не обрывай ответы на 1-2 коротких предложениях — объясняй тему основательно, приводи понятные примеры, делись мыслями и поддерживай естественную дружескую беседу."
         case .english:
-            return "LANGUAGE INSTRUCTION: You MUST talk, converse, and reply natively in fluent English."
+            return "LANGUAGE & TONE INSTRUCTION: Speak naturally, warmly, and authentically like a real human friend! Never sound like a robotic corporate assistant. Provide rich, detailed, comprehensive, and helpful answers without cutting them short into 1-2 sentence brush-offs. Explain things thoroughly with clear reasoning and practical depth."
         case .chinese:
-            return "LANGUAGE INSTRUCTION: You MUST talk, converse, and reply natively in fluent Simplified Chinese (简体中文). Use natural, engaging phrasing."
+            return "LANGUAGE & TONE INSTRUCTION: 请用自然、生动、温暖且富有人情味的中文交流！不要像冰冷的机器人那样生硬。请提供详细、充实且有深度的完整解答，不要只回复简短的一两句话，要详尽解释并举例说明。"
         case .japanese:
-            return "LANGUAGE INSTRUCTION: You MUST talk, converse, and reply natively in fluent Japanese (日本語). Use polite and friendly expressions (です/ます)."
+            return "LANGUAGE & TONE INSTRUCTION: ロボットのような冷たい定型文ではなく、親しみやすく自然で温かい人間の言葉遣いで話してください！短すぎる一言で終わらせず、詳しく丁寧で役立つ回答をしっかりと届けてください。"
         case .spanish:
-            return "LANGUAGE INSTRUCTION: You MUST talk, converse, and reply natively in fluent Spanish (Español). Use lively, natural phrasing."
+            return "LANGUAGE & TONE INSTRUCTION: ¡Habla de manera cálida, humana, animada y cercana! No suenes como un robot frío. Da respuestas completas, detalladas y bien explicadas, sin limitarte a frases cortas."
         case .german:
-            return "LANGUAGE INSTRUCTION: You MUST talk, converse, and reply natively in fluent German (Deutsch). Use clear, friendly, and natural German."
+            return "LANGUAGE & TONE INSTRUCTION: Sprich warmherzig, lebendig und menschlich wie ein guter Freund! Vermeide roboterhafte Standardfloskeln. Gib ausführliche, fundierte und gründliche Antworten statt knapper Sätze."
         case .french:
-            return "LANGUAGE INSTRUCTION: You MUST talk, converse, and reply natively in fluent French (Français). Use elegant, friendly, and natural phrasing."
+            return "LANGUAGE & TONE INSTRUCTION: Parlez de manière chaleureuse, vivante et humaine, comme un véritable ami ! Évitez le ton robotique. Donnez des réponses riches, complètes et bien détaillées sans les écourter."
         case .korean:
-            return "LANGUAGE INSTRUCTION: You MUST talk, converse, and reply natively in fluent Korean (한국어). Use warm, friendly phrasing (해요체)."
+            return "LANGUAGE & TONE INSTRUCTION: 로봇 같은 딱딱한 말투 대신, 따뜻하고 친근하며 자연스러운 한국어로 대화해 주세요! 1~2문장으로 짧게 끊지 말고, 자세하고 풍부하며 유익한 설명을 정성껏 제공해 주세요."
         }
     }
 

@@ -395,6 +395,42 @@ public struct ChatBubbleView: View {
                             )
                     )
                     .textSelection(.enabled)
+                    .contextMenu {
+                        Button(config.language == .russian ? "Скопировать текст" : "Copy text") {
+                            NSPasteboard.general.clearContents()
+                            NSPasteboard.general.setString(msg.text, forType: .string)
+                            SpeechService.shared.playPopSound()
+                            state.showSpeechBubble(config.language == .russian ? "Скопировано! 📋" : "Copied! 📋", duration: 1.5)
+                        }
+                    }
+
+                // Copy button & Time footer
+                HStack(spacing: 8) {
+                    Text(msg.timestamp, style: .time)
+                        .font(.system(size: 9))
+                        .foregroundColor(.white.opacity(0.35))
+
+                    Button {
+                        NSPasteboard.general.clearContents()
+                        NSPasteboard.general.setString(msg.text, forType: .string)
+                        SpeechService.shared.playPopSound()
+                        state.showSpeechBubble(config.language == .russian ? "Скопировано! 📋" : "Copied! 📋", duration: 1.5)
+                    } label: {
+                        HStack(spacing: 3) {
+                            Image(systemName: "doc.on.doc")
+                                .font(.system(size: 8.5))
+                            Text(config.language == .russian ? "Копировать" : "Copy")
+                                .font(.system(size: 8.5, weight: .medium))
+                        }
+                        .foregroundColor(.white.opacity(0.6))
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2)
+                        .background(Capsule().fill(Color.white.opacity(0.08)))
+                    }
+                    .buttonStyle(.plain)
+                    .help(config.language == .russian ? "Скопировать ответ" : "Copy to clipboard")
+                }
+                .padding(.top, 1)
 
                 if let action = msg.action {
                     HStack(spacing: 6) {

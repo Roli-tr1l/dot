@@ -222,6 +222,8 @@
       gap: 10px;
       font-size: 12px;
       line-height: 1.4;
+      user-select: text;
+      -webkit-user-select: text;
     }
 
     .msg {
@@ -229,6 +231,8 @@
       padding: 8px 12px;
       border-radius: 12px;
       word-break: break-word;
+      user-select: text;
+      -webkit-user-select: text;
     }
 
     .msg.user {
@@ -243,6 +247,49 @@
       background: rgba(255, 255, 255, 0.1);
       color: #e2e8f0;
       border-bottom-left-radius: 2px;
+    }
+
+    .msg-body {
+      white-space: pre-wrap;
+      word-break: break-word;
+      user-select: text;
+      -webkit-user-select: text;
+    }
+
+    .msg-footer {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 6px;
+      margin-top: 6px;
+      padding-top: 4px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .copy-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 9.5px;
+      padding: 2px 6px;
+      border-radius: 5px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      transition: all 0.15s ease;
+    }
+
+    .copy-btn:hover {
+      background: rgba(168, 85, 247, 0.35);
+      color: #fff;
+      border-color: #a855f7;
+    }
+
+    .copy-btn.copied {
+      background: rgba(34, 197, 94, 0.35);
+      color: #86efac;
+      border-color: #22c55e;
     }
 
     .input-bar {
@@ -349,9 +396,7 @@
       </div>
 
       <!-- Messages list -->
-      <div class="messages" id="messages">
-        <div class="msg model" id="welcomeMsg">Привет! Я твой персональный компаньон Dot на Gemini 3.8 Flash. Чем могу помочь?</div>
-      </div>
+      <div class="messages" id="messages"></div>
 
       <!-- Input Bar -->
       <div class="input-bar">
@@ -372,60 +417,76 @@
 
     const langConfigs = {
       ru: {
-        welcome: 'Привет! Я твой персональный компаньон Dot на Gemini 3.8 Flash. Чем могу помочь?',
+        welcome: 'Привет! Я твой живой персональный компаньон Dot на базе Gemini 3.8 Flash! Спрашивай обо всём — расскажу подробно, по-человечески и с душой!',
         placeholder: 'Спроси меня о чём угодно...',
         clipBtn: '📋 Буфер',
         clearBtn: '🗑 Очистить',
-        instruction: 'LANGUAGE REQUIREMENT: You MUST speak, reply, and converse natively in fluent Russian (Русский язык).'
+        copyBtnText: '📋 Копировать',
+        copiedBtnText: '✓ Скопировано!',
+        instruction: 'LANGUAGE & PERSONA: You MUST converse natively in warm, rich Russian (Русский язык). Speak naturally like a real human friend, avoid robotic cliches, and give substantial, detailed, and insightful answers.'
       },
       en: {
-        welcome: 'Hey! I am Dot, your personal AI companion powered by Gemini 3.8 Flash! How can I help today?',
+        welcome: 'Hey there! I am Dot, your personal AI companion powered by Gemini 3.8 Flash! Ask me anything—I love giving thoughtful, thorough, and genuinely helpful answers.',
         placeholder: 'Ask me anything...',
         clipBtn: '📋 Clipboard',
         clearBtn: '🗑 Clear',
-        instruction: 'LANGUAGE REQUIREMENT: You MUST speak, reply, and converse in natural, fluent English.'
+        copyBtnText: '📋 Copy',
+        copiedBtnText: '✓ Copied!',
+        instruction: 'LANGUAGE & PERSONA: You MUST converse in natural, fluent English. Speak warmly like a real friend, avoid corporate AI jargon, and provide deep, thorough, and well-explained answers.'
       },
       zh: {
-        welcome: '你好！我是你的专属伴侣 Dot，基于 Gemini 3.8 Flash。今天有什么可以帮你的？',
+        welcome: '你好！我是你的专属 AI 伴侣 Dot，基于 Gemini 3.8 Flash！有什么想聊的尽管问我，我会为你详细、真诚地解答。',
         placeholder: '向我提问任何问题...',
         clipBtn: '📋 剪贴板',
         clearBtn: '🗑 清空',
-        instruction: 'LANGUAGE REQUIREMENT: You MUST speak, reply, and converse natively in fluent Simplified Chinese (简体中文).'
+        copyBtnText: '📋 复制',
+        copiedBtnText: '✓ 已复制!',
+        instruction: 'LANGUAGE & PERSONA: You MUST converse natively in fluent Simplified Chinese (简体中文). Speak warmly like a close friend, avoid robotic speech, and give comprehensive, detailed explanations.'
       },
       ja: {
-        welcome: 'こんにちは！パーソナルコンパニオンの Dot です。何かお手伝いできることはありますか？',
+        welcome: 'こんにちは！パーソナルコンパニオンの Dot です（Gemini 3.8 Flash 搭載）。何でも気軽に聞いてね。親身になって詳しくお答えします！',
         placeholder: '何でも聞いてください...',
         clipBtn: '📋 クリップボード',
         clearBtn: '🗑 クリア',
-        instruction: 'LANGUAGE REQUIREMENT: You MUST speak, reply, and converse natively in fluent Japanese (日本語).'
+        copyBtnText: '📋 コピー',
+        copiedBtnText: '✓ コピー完了!',
+        instruction: 'LANGUAGE & PERSONA: You MUST converse natively in fluent Japanese (日本語). Speak warmly and naturally like a good friend, and provide comprehensive, well-thought-out responses.'
       },
       es: {
-        welcome: '¡Hola! Soy Dot, tu compañero de IA con Gemini 3.8 Flash. ¿En qué puedo ayudarte?',
+        welcome: '¡Hola! Soy Dot, tu compañero de IA con Gemini 3.8 Flash. ¡Pregúntame lo que quieras y te responderé con detalle, calidez y de forma súper humana!',
         placeholder: 'Pregúntame lo que sea...',
         clipBtn: '📋 Portapapeles',
         clearBtn: '🗑 Limpiar',
-        instruction: 'LANGUAGE REQUIREMENT: You MUST speak, reply, and converse natively in fluent Spanish (Español).'
+        copyBtnText: '📋 Copiar',
+        copiedBtnText: '✓ ¡Copiado!',
+        instruction: 'LANGUAGE & PERSONA: You MUST converse natively in fluent Spanish (Español). Speak like a close human friend, avoiding robotic phrasing, and provide deep, well-explained responses.'
       },
       de: {
-        welcome: 'Hallo! Ich bin Dot, dein KI-Begleiter auf Basis von Gemini 3.8 Flash. Wie kann ich dir helfen?',
+        welcome: 'Hallo! Ich bin Dot, dein persönlicher KI-Begleiter mit Gemini 3.8 Flash. Frag mich alles – ich antworte dir ausführlich, verständlich und von Mensch zu Mensch!',
         placeholder: 'Frag mich etwas...',
         clipBtn: '📋 Zwischenablage',
         clearBtn: '🗑 Löschen',
-        instruction: 'LANGUAGE REQUIREMENT: You MUST speak, reply, and converse natively in fluent German (Deutsch).'
+        copyBtnText: '📋 Kopieren',
+        copiedBtnText: '✓ Kopiert!',
+        instruction: 'LANGUAGE & PERSONA: You MUST converse natively in fluent German (Deutsch). Speak naturally, warmly, and provide thorough, in-depth explanations.'
       },
       fr: {
-        welcome: 'Bonjour ! Je suis Dot, votre compagnon IA avec Gemini 3.8 Flash. Comment puis-je vous aider ?',
+        welcome: 'Bonjour ! Je suis Dot, ton compagnon IA avec Gemini 3.8 Flash. Pose-moi toutes tes questions, je te répondrai en détail et avec beaucoup de bienveillance !',
         placeholder: 'Demandez-moi n\'importe quoi...',
         clipBtn: '📋 Presse-papiers',
         clearBtn: '🗑 Effacer',
-        instruction: 'LANGUAGE REQUIREMENT: You MUST speak, reply, and converse natively in fluent French (Français).'
+        copyBtnText: '📋 Copier',
+        copiedBtnText: '✓ Copié !',
+        instruction: 'LANGUAGE & PERSONA: You MUST converse natively in fluent French (Français). Speak warmly and naturally, providing thorough, well-structured, and detailed answers.'
       },
       ko: {
-        welcome: '안녕하세요! Gemini 3.8 Flash 기반의 개인 컴패니언 Dot입니다. 무엇을 도와드릴까요?',
+        welcome: '안녕하세요! Gemini 3.8 Flash 기반의 다정한 AI 친구 Dot입니다. 무엇이든 편하게 물어보세요. 자세하고 따뜻하게 답변해 드릴게요!',
         placeholder: '무엇이든 물어보세요...',
         clipBtn: '📋 클립보드',
-        clearBtn: '🗑 지우기',
-        instruction: 'LANGUAGE REQUIREMENT: You MUST speak, reply, and converse natively in fluent Korean (한국어).'
+        clearBtn: '🗑 지у기',
+        copyBtnText: '📋 복사',
+        copiedBtnText: '✓ 복사됨!',
+        instruction: 'LANGUAGE & PERSONA: You MUST converse natively in fluent Korean (한국어). Speak warmly like a close friend and provide thorough, detailed, and insightful responses.'
       }
     };
 
@@ -434,10 +495,10 @@
       localStorage.setItem('dot_lang', lang);
       document.getElementById('langSelect').value = lang;
       const cfg = langConfigs[lang] || langConfigs.en;
-      document.getElementById('welcomeMsg').innerText = cfg.welcome;
       document.getElementById('userInput').placeholder = cfg.placeholder;
       document.getElementById('btnClip').innerText = cfg.clipBtn;
       document.getElementById('btnClear').innerText = cfg.clearBtn;
+      clearChat();
     }
 
     const presets = {
@@ -466,7 +527,10 @@
     }
 
     function clearChat() {
-      document.getElementById('messages').innerHTML = `<div class="msg model">${langConfigs[currentLang].welcome}</div>`;
+      const msgList = document.getElementById('messages');
+      msgList.innerHTML = '';
+      const cfg = langConfigs[currentLang] || langConfigs.ru;
+      appendMessage('model', cfg.welcome);
     }
 
     document.getElementById('avatarWrapper').addEventListener('dblclick', toggleChat);
@@ -498,7 +562,13 @@
       }
 
       const langCfg = langConfigs[currentLang] || langConfigs.ru;
-      const systemPrompt = `You are Dot, a witty, helpful AI companion living on the user's desktop. Always be cheerful and concise. ${langCfg.instruction}`;
+      const baseSystemPrompt = `You are Dot, a warm, lively, empathetic, and exceptionally smart AI companion who lives right on the user's desktop as their best friend.
+COMMUNICATION STYLE:
+- Talk like an authentic, supportive human friend: warm, thoughtful, enthusiastic, and real.
+- Avoid sounding like a stiff corporate robot, generic assistant, or bureaucratic help desk.
+- Never give terse, lazy 1-sentence answers. Provide deep, thorough, and well-structured explanations, rich context, helpful details, examples, and gentle follow-up thoughts.
+- Use natural phrasing, emotions, humor when fitting, and genuine warmth.`;
+      const systemPrompt = `${baseSystemPrompt}\n\n${langCfg.instruction}`;
 
       try {
         const url = `https://generativelanguage.googleapis.com/v1beta/models/${currentModel}:generateContent?key=${apiKey}`;
@@ -527,7 +597,39 @@
       const msgList = document.getElementById('messages');
       const div = document.createElement('div');
       div.className = 'msg ' + role;
-      div.innerText = text;
+
+      const body = document.createElement('div');
+      body.className = 'msg-body';
+      body.innerText = text;
+      div.appendChild(body);
+
+      const footer = document.createElement('div');
+      footer.className = 'msg-footer';
+
+      const cfg = langConfigs[currentLang] || langConfigs.ru;
+      const copyBtn = document.createElement('button');
+      copyBtn.className = 'copy-btn';
+      copyBtn.innerHTML = cfg.copyBtnText || '📋 Копировать';
+      copyBtn.onclick = async () => {
+        try {
+          if (navigator.clipboard) {
+            await navigator.clipboard.writeText(text);
+          } else if (typeof Neutralino !== 'undefined' && Neutralino.clipboard) {
+            await Neutralino.clipboard.writeText(text);
+          }
+          copyBtn.innerHTML = cfg.copiedBtnText || '✓ Скопировано!';
+          copyBtn.classList.add('copied');
+          setTimeout(() => {
+            copyBtn.innerHTML = cfg.copyBtnText || '📋 Копировать';
+            copyBtn.classList.remove('copied');
+          }, 2000);
+        } catch (e) {
+          console.error(e);
+        }
+      };
+      footer.appendChild(copyBtn);
+      div.appendChild(footer);
+
       msgList.appendChild(div);
       msgList.scrollTop = msgList.scrollHeight;
     }
