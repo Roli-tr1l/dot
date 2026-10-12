@@ -76,7 +76,7 @@ public struct ChatBubbleView: View {
                         .foregroundColor(.white.opacity(0.8))
                 }
 
-                Text(state.mood.statusDescription)
+                Text(state.mood.statusDescription(in: config.language))
                     .font(.system(size: 11))
                     .foregroundColor(.white.opacity(0.6))
             }
@@ -93,7 +93,7 @@ public struct ChatBubbleView: View {
                     .foregroundColor(state.isGoalsOpen ? config.colorTheme.primaryColor : .white.opacity(0.75))
             }
             .buttonStyle(.plain)
-            .help("Autonomous Goals")
+            .help(config.language.localized(.goalsAction))
 
             Button {
                 withAnimation(.spring(response: 0.3)) {
@@ -105,7 +105,7 @@ public struct ChatBubbleView: View {
                     .foregroundColor(state.isSettingsOpen ? config.colorTheme.primaryColor : .white.opacity(0.75))
             }
             .buttonStyle(.plain)
-            .help("Preferences & API")
+            .help(config.language.localized(.settingsTitle))
 
             Button {
                 withAnimation(.spring(response: 0.3)) {
@@ -162,27 +162,41 @@ public struct ChatBubbleView: View {
     // MARK: - Quick Mac Superpowers Toolbar
     private func quickActionsToolbar() -> some View {
         HStack(spacing: 8) {
-            quickButton(icon: "doc.on.clipboard", title: "Clipboard") {
+            quickButton(icon: "doc.on.clipboard", title: config.language.localized(.clipboardAction)) {
                 if let clip = SystemService.shared.getClipboardText(), !clip.isEmpty {
-                    vm.inputText = "Here is what's in my clipboard:\n\"\"\"\n\(clip.prefix(500))\n\"\"\"\nCan you explain or help with this?"
+                    switch config.language {
+                    case .russian:
+                        vm.inputText = "Вот что у меня в буфере обмена:\n\"\"\"\n\(clip.prefix(500))\n\"\"\"\nПомоги разобраться или объясни этот фрагмент."
+                    case .english:
+                        vm.inputText = "Here is what's in my clipboard:\n\"\"\"\n\(clip.prefix(500))\n\"\"\"\nCan you explain or help with this?"
+                    default:
+                        vm.inputText = "Clipboard content:\n\"\"\"\n\(clip.prefix(500))\n\"\"\"\nPlease explain."
+                    }
                 } else {
                     state.showSpeechBubble("Clipboard is empty! 📋", duration: 2.0)
                 }
             }
 
-            quickButton(icon: "camera.viewfinder", title: "Look Screen") {
+            quickButton(icon: "camera.viewfinder", title: config.language.localized(.screenAction)) {
                 if let screen = SystemService.shared.captureActiveScreen() {
                     vm.attachedImage = screen
                     if vm.inputText.isEmpty {
-                        vm.inputText = "Take a look at my screen and tell me what you see!"
+                        switch config.language {
+                        case .russian:
+                            vm.inputText = "Посмотри на мой экран и расскажи, что ты видишь и что посоветуешь!"
+                        case .english:
+                            vm.inputText = "Take a look at my screen and tell me what you see!"
+                        default:
+                            vm.inputText = "Please inspect my screen."
+                        }
                     }
                     SpeechService.shared.playPopSound()
                 }
             }
 
-            quickButton(icon: "bolt.badge.automatic", title: "Mac Health") {
-                let battery = SystemService.shared.getBatteryStatus()
-                vm.inputText = "Give me a quick Mac status report: \(battery)"
+            quickButton(icon: "trash", title: config.language.localized(.clearAction)) {
+                state.messages.removeAll()
+                SpeechService.shared.playPopSound()
             }
 
             Spacer()
@@ -235,7 +249,55 @@ public struct ChatBubbleView: View {
     }
 
     private func emptyStateView() -> some View {
-        VStack(spacing: 12) {
+        let greetingText: String
+        let suggestion1: String
+        let suggestion2: String
+        let suggestion3: String
+
+        switch config.language {
+        case .russian:
+            greetingText = "Привет! Я \(config.preset.rawValue)."
+            suggestion1 = "📸 Посмотри на мой экран и помоги"
+            suggestion2 = "📋 Объясни код из моего буфера"
+            suggestion3 = "⚡ Проверь батарею и состояние Mac"
+        case .chinese:
+            greetingText = "你好！我是 \(config.preset.rawValue)。"
+            suggestion1 = "📸 查看当前屏幕并给我建议"
+            suggestion2 = "📋 解释我剪贴板里的代码"
+            suggestion3 = "⚡ 检查 Mac 电池和系统状态"
+        case .japanese:
+            greetingText = "こんにちは！ \(config.preset.rawValue) です。"
+            suggestion1 = "📸 画面を見てアドバイスして"
+            suggestion2 = "📋 クリップボードのコードを解説して"
+            suggestion3 = "⚡ Mac のバッテリーと状態を確認"
+        case .spanish:
+            greetingText = "¡Hola! Soy \(config.preset.rawValue)."
+            suggestion1 = "📸 Mira mi pantalla y ayúdame"
+            suggestion2 = "📋 Explica el código del portapapeles"
+            suggestion3 = "⚡ Estado de batería y del sistema"
+        case .german:
+            greetingText = "Hallo! Ich bin \(config.preset.rawValue)."
+            suggestion1 = "📸 Schau dir meinen Bildschirm an"
+            suggestion2 = "📋 Erkläre Code aus der Zwischenablage"
+            suggestion3 = "⚡ Mac Batterie & Systemstatus prüfen"
+        case .french:
+            greetingText = "Bonjour ! Je suis \(config.preset.rawValue)."
+            suggestion1 = "📸 Regarde mon écran et aide-moi"
+            suggestion2 = "📋 Explique le code du presse-papiers"
+            suggestion3 = "⚡ Vérifier la batterie et l'état du Mac"
+        case .korean:
+            greetingText = "안녕하세요! 저는 \(config.preset.rawValue)입니다."
+            suggestion1 = "📸 화면을 보고 도움을 주세요"
+            suggestion2 = "📋 클립보드의 코드를 설명해 주세요"
+            suggestion3 = "⚡ Mac 배터리 및 상태 확인"
+        case .english:
+            greetingText = "Hey! I'm \(config.preset.rawValue)."
+            suggestion1 = "📸 Look at my screen and help me"
+            suggestion2 = "📋 Explain code from my clipboard"
+            suggestion3 = "⚡ Check MacBook battery & system health"
+        }
+
+        return VStack(spacing: 12) {
             Spacer().frame(height: 18)
             Circle()
                 .fill(config.colorTheme.primaryColor.opacity(0.2))
@@ -245,7 +307,7 @@ public struct ChatBubbleView: View {
                         .font(.system(size: 24))
                 )
 
-            Text("Hey! I'm \(config.preset.rawValue).")
+            Text(greetingText)
                 .font(.system(size: 15, weight: .bold, design: .rounded))
                 .foregroundColor(.white)
 
@@ -257,18 +319,18 @@ public struct ChatBubbleView: View {
 
             // Prompt suggestions
             VStack(spacing: 6) {
-                promptSuggestionButton("📸 Look at my screen and help me") {
+                promptSuggestionButton(suggestion1) {
                     if let screen = SystemService.shared.captureActiveScreen() {
                         vm.attachedImage = screen
                         vm.inputText = "Explain what is on my screen and what I should do next."
                     }
                 }
-                promptSuggestionButton("📋 Explain code from my clipboard") {
+                promptSuggestionButton(suggestion2) {
                     if let clip = SystemService.shared.getClipboardText(), !clip.isEmpty {
                         vm.inputText = "Here is code from my clipboard:\n```\n\(clip.prefix(500))\n```\nReview it and point out issues."
                     }
                 }
-                promptSuggestionButton("⚡ Check MacBook battery & system health") {
+                promptSuggestionButton(suggestion3) {
                     vm.inputText = "Check my Mac battery and tell me how my system is doing."
                 }
             }
@@ -395,7 +457,7 @@ public struct ChatBubbleView: View {
     // MARK: - Input Bar
     private func inputBar() -> some View {
         HStack(spacing: 8) {
-            TextField("Ask \(config.preset.rawValue) anything...", text: $vm.inputText)
+            TextField(config.language.localized(.chatPlaceholder), text: $vm.inputText)
                 .textFieldStyle(.plain)
                 .font(.system(size: 12.5))
                 .foregroundColor(.white)

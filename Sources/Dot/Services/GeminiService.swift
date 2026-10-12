@@ -61,11 +61,17 @@ public class GeminiService {
             "parts": userParts
         ])
 
+        let effectiveSystemPrompt = """
+\(DotConfig.shared.systemPrompt)
+
+\(DotConfig.shared.language.promptInstruction)
+"""
+
         let requestBody: [String: Any] = [
             "contents": contents,
             "systemInstruction": [
                 "parts": [
-                    ["text": DotConfig.shared.systemPrompt]
+                    ["text": effectiveSystemPrompt]
                 ]
             ],
             "generationConfig": [

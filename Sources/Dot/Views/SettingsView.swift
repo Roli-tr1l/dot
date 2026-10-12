@@ -10,7 +10,7 @@ public struct SettingsView: View {
         VStack(spacing: 0) {
             // Header
             HStack {
-                Text("Dot Preferences")
+                Text(config.language.localized(.settingsTitle))
                     .font(.system(size: 15, weight: .bold, design: .rounded))
                     .foregroundColor(.white)
 
@@ -32,9 +32,9 @@ public struct SettingsView: View {
 
             // Segmented Tab Picker
             Picker("", selection: $vm.selectedTab) {
-                Text("AI & API").tag(0)
-                Text("Avatar & Presets").tag(1)
-                Text("Voice & Sound").tag(2)
+                Text(config.language.localized(.tabAI)).tag(0)
+                Text(config.language.localized(.tabAvatar)).tag(1)
+                Text(config.language.localized(.tabVoice)).tag(2)
             }
             .pickerStyle(.segmented)
             .padding(.horizontal, 16)
@@ -56,7 +56,7 @@ public struct SettingsView: View {
                 .padding(16)
             }
         }
-        .frame(width: 390, height: 480)
+        .frame(width: 390, height: 490)
         .background(
             RoundedRectangle(cornerRadius: 18)
                 .fill(.ultraThinMaterial)
@@ -75,18 +75,33 @@ public struct SettingsView: View {
     // MARK: - Tab 0: API & AI
     private func apiSettingsSection() -> some View {
         VStack(alignment: .leading, spacing: 14) {
+            // Language Selector
             VStack(alignment: .leading, spacing: 6) {
-                Text("Google Gemini API Key")
+                Text(config.language.localized(.languageLabel))
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(.white.opacity(0.9))
+
+                Picker("", selection: $config.language) {
+                    ForEach(DotLanguage.allCases) { lang in
+                        Text(lang.displayName).tag(lang)
+                    }
+                }
+                .pickerStyle(.menu)
+                .labelsHidden()
+            }
+
+            VStack(alignment: .leading, spacing: 6) {
+                Text(config.language.localized(.apiKeyLabel))
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundColor(.white.opacity(0.9))
 
                 HStack {
                     if vm.isShowingApiKey {
-                        TextField("Paste Gemini API Key", text: $config.apiKey)
+                        TextField(config.language.localized(.apiKeyPlaceholder), text: $config.apiKey)
                             .textFieldStyle(.plain)
                             .foregroundColor(.white)
                     } else {
-                        SecureField("Paste Gemini API Key", text: $config.apiKey)
+                        SecureField(config.language.localized(.apiKeyPlaceholder), text: $config.apiKey)
                             .textFieldStyle(.plain)
                             .foregroundColor(.white)
                     }
@@ -102,7 +117,7 @@ public struct SettingsView: View {
                 .padding(8)
                 .background(RoundedRectangle(cornerRadius: 8).fill(Color.white.opacity(0.08)))
 
-                Button("Get free Gemini API Key from Google AI Studio ↗") {
+                Button(config.language.localized(.apiKeyHelp)) {
                     SystemService.shared.openURL("https://aistudio.google.com/app/apikey")
                 }
                 .font(.system(size: 10.5))
@@ -111,7 +126,7 @@ public struct SettingsView: View {
             }
 
             VStack(alignment: .leading, spacing: 6) {
-                Text("Gemini Model")
+                Text(config.language.localized(.modelLabel))
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundColor(.white.opacity(0.9))
 
@@ -125,7 +140,7 @@ public struct SettingsView: View {
             }
 
             VStack(alignment: .leading, spacing: 6) {
-                Text("Dot Personality & System Instructions")
+                Text("Prompt / Instructions")
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundColor(.white.opacity(0.9))
 
@@ -135,7 +150,7 @@ public struct SettingsView: View {
                     .scrollContentBackground(.hidden)
                     .padding(6)
                     .background(RoundedRectangle(cornerRadius: 8).fill(Color.white.opacity(0.08)))
-                    .frame(height: 100)
+                    .frame(height: 90)
             }
         }
     }
@@ -153,7 +168,7 @@ public struct SettingsView: View {
 
             // Official ChatGPT Presets Grid
             VStack(alignment: .leading, spacing: 6) {
-                Text("Official ChatGPT Mascot Presets")
+                Text(config.language.localized(.presetsLabel))
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundColor(.white.opacity(0.9))
 
@@ -270,16 +285,16 @@ public struct SettingsView: View {
     // MARK: - Tab 2: Voice & Sound
     private func voiceSettingsSection() -> some View {
         VStack(alignment: .leading, spacing: 14) {
-            Toggle("Speak responses aloud", isOn: $config.speechEnabled)
+            Toggle(config.language.localized(.speechEnabledLabel), isOn: $config.speechEnabled)
                 .font(.system(size: 12, weight: .semibold))
                 .foregroundColor(.white.opacity(0.9))
 
-            Toggle("Sound Effects (Pokes, pops, chimes)", isOn: $config.soundEffects)
+            Toggle(config.language.localized(.soundEffectsLabel), isOn: $config.soundEffects)
                 .font(.system(size: 12))
                 .foregroundColor(.white.opacity(0.9))
 
             VStack(alignment: .leading, spacing: 6) {
-                Text("Speech Voice")
+                Text(config.language.localized(.voiceLabel))
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundColor(.white.opacity(0.9))
 
@@ -294,7 +309,7 @@ public struct SettingsView: View {
 
             VStack(alignment: .leading, spacing: 6) {
                 HStack {
-                    Text("Speech Rate")
+                    Text(config.language.localized(.speechRateLabel))
                         .font(.system(size: 12, weight: .semibold))
                         .foregroundColor(.white.opacity(0.9))
                     Spacer()
@@ -307,7 +322,18 @@ public struct SettingsView: View {
             }
 
             Button("Test Voice 🔊") {
-                SpeechService.shared.speak("Hello! I am \(config.preset.rawValue), your Mac companion!")
+                let testPhrase: String
+                switch config.language {
+                case .russian:  testPhrase = "Привет! Я твой персональный компаньон Dot!"
+                case .english:  testPhrase = "Hello! I am your personal Mac companion Dot!"
+                case .chinese:  testPhrase = "你好！我是你的专属伴侣 Dot！"
+                case .japanese: testPhrase = "こんにちは！パーソナルコンパニオンの Dot です！"
+                case .spanish:  testPhrase = "¡Hola! ¡Soy Dot, tu compañero de Mac!"
+                case .german:   testPhrase = "Hallo! Ich bin dein Mac-Begleiter Dot!"
+                case .french:   testPhrase = "Bonjour ! Je suis Dot, votre compagnon Mac !"
+                case .korean:   testPhrase = "안녕하세요! 당신의 Mac 컴패니언 Dot입니다!"
+                }
+                SpeechService.shared.speak(testPhrase)
             }
             .font(.system(size: 11.5))
             .foregroundColor(config.colorTheme.primaryColor)

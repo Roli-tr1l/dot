@@ -128,6 +128,7 @@ public class DotConfig: ObservableObject {
     private enum Keys {
         static let userCredentialStorageKey = "dot_gemini_api_key"
         static let model = "dot_gemini_model"
+        static let language = "dot_language"
         static let preset = "dot_avatar_preset"
         static let bodyShape = "dot_avatar_body_shape"
         static let colorTheme = "dot_avatar_color"
@@ -149,6 +150,17 @@ public class DotConfig: ObservableObject {
 
     @Published public var model: String {
         didSet { UserDefaults.standard.set(model, forKey: Keys.model) }
+    }
+
+    @Published public var language: DotLanguage {
+        didSet {
+            UserDefaults.standard.set(language.rawValue, forKey: Keys.language)
+            // Automatically switch default voice for language if available
+            let targetVoice = language.defaultVoice
+            if SpeechService.availableVoiceNames.contains(where: { $0.localizedCaseInsensitiveContains(targetVoice) }) {
+                self.voiceName = targetVoice
+            }
+        }
     }
 
     @Published public var preset: DotPreset {
@@ -220,6 +232,9 @@ public class DotConfig: ObservableObject {
         self.apiKey = savedKey.isEmpty ? envKey : savedKey
 
         self.model = UserDefaults.standard.string(forKey: Keys.model) ?? "gemini-3.8-flash"
+
+        let savedLang = UserDefaults.standard.string(forKey: Keys.language) ?? ""
+        self.language = DotLanguage(rawValue: savedLang) ?? .russian
 
         let savedPreset = UserDefaults.standard.string(forKey: Keys.preset) ?? ""
         self.preset = DotPreset(rawValue: savedPreset) ?? .classicDot

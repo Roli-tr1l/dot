@@ -12,14 +12,28 @@ public enum DotMood: String, CaseIterable, Codable {
     case sleeping = "Sleeping"
 
     public var statusDescription: String {
+        return statusDescription(in: DotConfig.shared.language)
+    }
+
+    public func statusDescription(in language: DotLanguage) -> String {
         switch self {
-        case .idle: return "Chilling"
-        case .attentive: return "Listening..."
-        case .thinking: return "Thinking with Gemini..."
-        case .speaking: return "Speaking..."
-        case .happy: return "Super happy!"
-        case .puzzled: return "Hmm..."
-        case .sleeping: return "Zzz..."
+        case .idle:      return language.localized(.moodIdle)
+        case .attentive:
+            switch language {
+            case .russian: return "Слушает..."
+            case .english: return "Listening..."
+            case .chinese: return "倾听中..."
+            case .japanese: return "聞いています..."
+            case .spanish: return "Escuchando..."
+            case .german: return "Hört zu..."
+            case .french: return "Écoute..."
+            case .korean: return "듣는 중..."
+            }
+        case .thinking:  return language.localized(.moodThinking)
+        case .speaking:  return language.localized(.moodSpeaking)
+        case .happy:     return language.localized(.moodSuccess)
+        case .puzzled:   return language.localized(.moodError)
+        case .sleeping:  return language.localized(.moodSleeping)
         }
     }
 }
