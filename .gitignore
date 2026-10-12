@@ -25,6 +25,7 @@ dist/
 out/
 build/
 .electron/
+dot-lite/bin/
 
 # Secrets & Local environments
 .env
