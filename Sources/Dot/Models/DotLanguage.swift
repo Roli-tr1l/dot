@@ -361,6 +361,301 @@ public enum DotLanguage: String, CaseIterable, Identifiable, Codable {
             case .french:   return "Dort zZz"
             case .korean:   return "수면 중 zZz"
             }
+
+        case .goalsTitle:
+            switch self {
+            case .russian:  return "Автономные цели"
+            case .english:  return "Autonomous Goals"
+            case .chinese:  return "自主常驻目标"
+            case .japanese: return "自律バックグラウンド目標"
+            case .spanish:  return "Objetivos autónomos"
+            case .german:   return "Autonome Ziele"
+            case .french:   return "Objectifs autonomes"
+            case .korean:   return "자율 상주 목표"
+            }
+
+        case .goalsSubtitle:
+            switch self {
+            case .russian:  return "Фоновые микро-агенты"
+            case .english:  return "Standing background micro-agents"
+            case .chinese:  return "常驻后台微智能体"
+            case .japanese: return "バックグラウンド常駐エージェント"
+            case .spanish:  return "Microagentes en segundo plano"
+            case .german:   return "Hintergrund-Mikro-Agenten"
+            case .french:   return "Micro-agents d'arrière-plan"
+            case .korean:   return "상주형 백그라운드 마이크로 에이전트"
+            }
+
+        case .addGoalButton:
+            switch self {
+            case .russian:  return "Добавить фоновую цель"
+            case .english:  return "Add Standing Goal"
+            case .chinese:  return "添加常驻目标"
+            case .japanese: return "目標を追加"
+            case .spanish:  return "Añadir objetivo"
+            case .german:   return "Neues Ziel hinzufügen"
+            case .french:   return "Ajouter un objectif"
+            case .korean:   return "상주 목표 추가"
+            }
+
+        case .newGoalTitle:
+            switch self {
+            case .russian:  return "Новая цель"
+            case .english:  return "New Goal"
+            case .chinese:  return "新目标"
+            case .japanese: return "新しい目標"
+            case .spanish:  return "Nuevo objetivo"
+            case .german:   return "Neues Ziel"
+            case .french:   return "Nouvel objectif"
+            case .korean:   return "새 목표"
+            }
+
+        case .goalTitlePlaceholder:
+            switch self {
+            case .russian:  return "Название цели (напр. Контроль батареи)"
+            case .english:  return "Goal Title (e.g. Battery Sentinel)"
+            case .chinese:  return "目标名称（例如：电池监控）"
+            case .japanese: return "目標のタイトル（例: バッテリー監視）"
+            case .spanish:  return "Título (ej. Centinela de batería)"
+            case .german:   return "Titel (z. B. Akku-Wächter)"
+            case .french:   return "Titre (ex. Sentinelle de batterie)"
+            case .korean:   return "목표 제목 (예: 배터리 감시)"
+            }
+
+        case .goalPromptPlaceholder:
+            switch self {
+            case .russian:  return "Инструкция / промпт для Gemini..."
+            case .english:  return "Prompt instruction for Gemini..."
+            case .chinese:  return "给 Gemini 的提示词指令..."
+            case .japanese: return "Gemini へのプロンプト指示..."
+            case .spanish:  return "Instrucción de prompt para Gemini..."
+            case .german:   return "Prompt-Anweisung für Gemini..."
+            case .french:   return "Instruction de prompt pour Gemini..."
+            case .korean:   return "Gemini 프롬프트 지시사항..."
+            }
+
+        case .intervalLabel:
+            switch self {
+            case .russian:  return "Интервал:"
+            case .english:  return "Interval:"
+            case .chinese:  return "运行间隔："
+            case .japanese: return "間隔:"
+            case .spanish:  return "Intervalo:"
+            case .german:   return "Intervall:"
+            case .french:   return "Intervalle :"
+            case .korean:   return "주기:"
+            }
+
+        case .cancelButton:
+            switch self {
+            case .russian:  return "Отмена"
+            case .english:  return "Cancel"
+            case .chinese:  return "取消"
+            case .japanese: return "キャンセル"
+            case .spanish:  return "Cancelar"
+            case .german:   return "Abbrechen"
+            case .french:   return "Annuler"
+            case .korean:   return "취소"
+            }
+
+        case .saveButton:
+            switch self {
+            case .russian:  return "Сохранить"
+            case .english:  return "Save"
+            case .chinese:  return "保存"
+            case .japanese: return "保存"
+            case .spanish:  return "Guardar"
+            case .german:   return "Speichern"
+            case .french:   return "Enregistrer"
+            case .korean:   return "저장"
+            }
+
+        case .resultLabel:
+            switch self {
+            case .russian:  return "Результат:"
+            case .english:  return "Result:"
+            case .chinese:  return "执行结果:"
+            case .japanese: return "実行結果:"
+            case .spanish:  return "Resultado:"
+            case .german:   return "Ergebnis:"
+            case .french:   return "Résultat :"
+            case .korean:   return "결과:"
+            }
+
+        case .promptInstructionsLabel:
+            switch self {
+            case .russian:  return "Системный промпт / Инструкции"
+            case .english:  return "Prompt / Instructions"
+            case .chinese:  return "系统提示词与指令"
+            case .japanese: return "プロンプト / システム指示"
+            case .spanish:  return "Prompt / Instrucciones"
+            case .german:   return "Prompt / Anweisungen"
+            case .french:   return "Prompt / Instructions"
+            case .korean:   return "프롬프트 / 시스템 지시"
+            }
+
+        case .bodyGeometryLabel:
+            switch self {
+            case .russian:  return "Форма тела аватара"
+            case .english:  return "Body Geometry"
+            case .chinese:  return "身材几何形态"
+            case .japanese: return "ボディ形状"
+            case .spanish:  return "Geometría corporal"
+            case .german:   return "Körperform"
+            case .french:   return "Forme du corps"
+            case .korean:   return "바디 형태"
+            }
+
+        case .colorAuraLabel:
+            switch self {
+            case .russian:  return "Цветовая аура"
+            case .english:  return "Color Aura"
+            case .chinese:  return "色彩光晕"
+            case .japanese: return "カラーオーラ"
+            case .spanish:  return "Aura de color"
+            case .german:   return "Farb-Aura"
+            case .french:   return "Aura de couleur"
+            case .korean:   return "컬러 오라"
+            }
+
+        case .accessoryLabel:
+            switch self {
+            case .russian:  return "Аксессуары"
+            case .english:  return "Accessory"
+            case .chinese:  return "配饰"
+            case .japanese: return "アクセサリー"
+            case .spanish:  return "Accesorio"
+            case .german:   return "Accessoire"
+            case .french:   return "Accessoire"
+            case .korean:   return "액세서리"
+            }
+
+        case .avatarScaleLabel:
+            switch self {
+            case .russian:  return "Размер аватара"
+            case .english:  return "Avatar Scale"
+            case .chinese:  return "尺寸缩放"
+            case .japanese: return "アバタースケール"
+            case .spanish:  return "Tamaño del avatar"
+            case .german:   return "Avatar-Größe"
+            case .french:   return "Échelle de l'avatar"
+            case .korean:   return "아바타 크기"
+            }
+
+        case .autoSleepLabel:
+            switch self {
+            case .russian:  return "Авто-сон при бездействии"
+            case .english:  return "Auto-sleep when inactive"
+            case .chinese:  return "闲置时自动休眠"
+            case .japanese: return "非アクティブ時に自動スリープ"
+            case .spanish:  return "Suspender automáticamente"
+            case .german:   return "Automatischer Ruhezustand"
+            case .french:   return "Mise en veille auto"
+            case .korean:   return "비활성 시 자동 수면"
+            }
+
+        case .testVoiceButton:
+            switch self {
+            case .russian:  return "Проверить голос 🔊"
+            case .english:  return "Test Voice 🔊"
+            case .chinese:  return "试听声音 🔊"
+            case .japanese: return "音声をテスト 🔊"
+            case .spanish:  return "Probar voz 🔊"
+            case .german:   return "Stimme testen 🔊"
+            case .french:   return "Tester la voix 🔊"
+            case .korean:   return "음성 테스트 🔊"
+            }
+        }
+    }
+
+    public func everyMinutes(_ mins: Int) -> String {
+        switch self {
+        case .russian:  return "Каждые \(mins) мин"
+        case .english:  return "Every \(mins) min"
+        case .chinese:  return "每 \(mins) 分钟"
+        case .japanese: return "\(mins)分ごと"
+        case .spanish:  return "Cada \(mins) min"
+        case .german:   return "Alle \(mins) Min."
+        case .french:   return "Toutes les \(mins) min"
+        case .korean:   return "\(mins)분마다"
+        }
+    }
+
+    public func lastChecked(_ timeStr: String) -> String {
+        switch self {
+        case .russian:  return "Проверено: \(timeStr)"
+        case .english:  return "Last checked: \(timeStr)"
+        case .chinese:  return "上次检查: \(timeStr)"
+        case .japanese: return "最終確認: \(timeStr)"
+        case .spanish:  return "Última comprobación: \(timeStr)"
+        case .german:   return "Zuletzt geprüft: \(timeStr)"
+        case .french:   return "Dernière vérif. : \(timeStr)"
+        case .korean:   return "마지막 확인: \(timeStr)"
+        }
+    }
+
+    public func defaultGoals() -> [TaskGoal] {
+        switch self {
+        case .russian:
+            return [
+                TaskGoal(
+                    title: "Контроль батареи Mac",
+                    prompt: "Проверь процент заряда батареи. Если ниже 20% и зарядка не подключена, предупреди пользователя.",
+                    intervalSeconds: 600,
+                    isEnabled: false
+                ),
+                TaskGoal(
+                    title: "Разминка и отдых глаз",
+                    prompt: "Напомни пользователю размяться, поморгать и сделать пару глотков воды.",
+                    intervalSeconds: 3600,
+                    isEnabled: false
+                )
+            ]
+        case .chinese:
+            return [
+                TaskGoal(
+                    title: "Mac 电池监测",
+                    prompt: "检查电量百分比。如果低于 20% 且未充电，提醒用户插上电源。",
+                    intervalSeconds: 600,
+                    isEnabled: false
+                ),
+                TaskGoal(
+                    title: "久坐与视力休息提醒",
+                    prompt: "提醒用户活动身体、眨眼休息并喝一口水。",
+                    intervalSeconds: 3600,
+                    isEnabled: false
+                )
+            ]
+        case .japanese:
+            return [
+                TaskGoal(
+                    title: "Mac バッテリー監視",
+                    prompt: "バッテリー残量を確認し、20%未満で充電されていない場合はユーザーに警告してください。",
+                    intervalSeconds: 600,
+                    isEnabled: false
+                ),
+                TaskGoal(
+                    title: "姿勢とストレッチのリマインダー",
+                    prompt: "軽くストレッチし、まばたきをして水分補給するよう促してください。",
+                    intervalSeconds: 3600,
+                    isEnabled: false
+                )
+            ]
+        default:
+            return [
+                TaskGoal(
+                    title: "Mac Battery Sentinel",
+                    prompt: "Check battery percentage. If below 20% and not charging, warn the user.",
+                    intervalSeconds: 600,
+                    isEnabled: false
+                ),
+                TaskGoal(
+                    title: "Desk Break & Posture Check",
+                    prompt: "Remind the user to stretch, blink, and take a sip of water.",
+                    intervalSeconds: 3600,
+                    isEnabled: false
+                )
+            ]
         }
     }
 }
@@ -391,4 +686,21 @@ public enum LocalizationKey {
     case moodSuccess
     case moodError
     case moodSleeping
+    case goalsTitle
+    case goalsSubtitle
+    case addGoalButton
+    case newGoalTitle
+    case goalTitlePlaceholder
+    case goalPromptPlaceholder
+    case intervalLabel
+    case cancelButton
+    case saveButton
+    case resultLabel
+    case promptInstructionsLabel
+    case bodyGeometryLabel
+    case colorAuraLabel
+    case accessoryLabel
+    case avatarScaleLabel
+    case autoSleepLabel
+    case testVoiceButton
 }

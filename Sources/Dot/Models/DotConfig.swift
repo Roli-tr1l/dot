@@ -160,6 +160,9 @@ public class DotConfig: ObservableObject {
             if SpeechService.availableVoiceNames.contains(where: { $0.localizedCaseInsensitiveContains(targetVoice) }) {
                 self.voiceName = targetVoice
             }
+            Task { @MainActor in
+                DotState.shared.updateGoalsLanguage(self.language)
+            }
         }
     }
 

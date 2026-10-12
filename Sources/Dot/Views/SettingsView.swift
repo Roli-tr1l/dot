@@ -140,7 +140,7 @@ public struct SettingsView: View {
             }
 
             VStack(alignment: .leading, spacing: 6) {
-                Text("Prompt / Instructions")
+                Text(config.language.localized(.promptInstructionsLabel))
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundColor(.white.opacity(0.9))
 
@@ -209,7 +209,7 @@ public struct SettingsView: View {
 
             // Body Shape
             VStack(alignment: .leading, spacing: 6) {
-                Text("Body Geometry")
+                Text(config.language.localized(.bodyGeometryLabel))
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundColor(.white.opacity(0.9))
 
@@ -223,7 +223,7 @@ public struct SettingsView: View {
 
             // Color Palette
             VStack(alignment: .leading, spacing: 6) {
-                Text("Color Aura")
+                Text(config.language.localized(.colorAuraLabel))
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundColor(.white.opacity(0.9))
 
@@ -249,7 +249,7 @@ public struct SettingsView: View {
 
             // Accessories
             VStack(alignment: .leading, spacing: 6) {
-                Text("Accessory")
+                Text(config.language.localized(.accessoryLabel))
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundColor(.white.opacity(0.9))
 
@@ -264,7 +264,7 @@ public struct SettingsView: View {
 
             // Avatar Scale
             VStack(alignment: .leading, spacing: 6) {
-                Text("Avatar Scale")
+                Text(config.language.localized(.avatarScaleLabel))
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundColor(.white.opacity(0.9))
 
@@ -276,7 +276,7 @@ public struct SettingsView: View {
                 .pickerStyle(.segmented)
             }
 
-            Toggle("Auto-sleep when inactive", isOn: $config.autoSleep)
+            Toggle(config.language.localized(.autoSleepLabel), isOn: $config.autoSleep)
                 .font(.system(size: 12))
                 .foregroundColor(.white.opacity(0.9))
         }
@@ -321,7 +321,7 @@ public struct SettingsView: View {
                 Slider(value: $config.speechRate, in: 0.7...1.5, step: 0.05)
             }
 
-            Button("Test Voice 🔊") {
+            Button(config.language.localized(.testVoiceButton)) {
                 let testPhrase: String
                 switch config.language {
                 case .russian:  testPhrase = "Привет! Я твой персональный компаньон Dot!"

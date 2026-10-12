@@ -11,10 +11,10 @@ public struct GoalsView: View {
             // Header
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Autonomous Goals")
+                    Text(config.language.localized(.goalsTitle))
                         .font(.system(size: 15, weight: .bold, design: .rounded))
                         .foregroundColor(.white)
-                    Text("Standing background micro-agents")
+                    Text(config.language.localized(.goalsSubtitle))
                         .font(.system(size: 11))
                         .foregroundColor(.white.opacity(0.6))
                 }
@@ -54,7 +54,7 @@ public struct GoalsView: View {
                         } label: {
                             HStack {
                                 Image(systemName: "plus.circle.fill")
-                                Text("Add Standing Goal")
+                                Text(config.language.localized(.addGoalButton))
                             }
                             .font(.system(size: 12, weight: .medium))
                             .foregroundColor(config.colorTheme.primaryColor)
@@ -107,21 +107,21 @@ public struct GoalsView: View {
                 .foregroundColor(.white.opacity(0.75))
 
             HStack {
-                Text("Every \(Int(goal.wrappedValue.intervalSeconds / 60)) min")
+                Text(config.language.everyMinutes(Int(goal.wrappedValue.intervalSeconds / 60)))
                     .font(.system(size: 10, weight: .medium))
                     .foregroundColor(config.colorTheme.primaryColor)
 
                 Spacer()
 
                 if let last = goal.wrappedValue.lastRun {
-                    Text("Last checked: \(last.formatted(date: .omitted, time: .shortened))")
+                    Text(config.language.lastChecked(last.formatted(date: .omitted, time: .shortened)))
                         .font(.system(size: 10))
                         .foregroundColor(.white.opacity(0.5))
                 }
             }
 
             if let result = goal.wrappedValue.lastResult {
-                Text("Result: \(result)")
+                Text("\(config.language.localized(.resultLabel)) \(result)")
                     .font(.system(size: 10.5, design: .monospaced))
                     .foregroundColor(.white.opacity(0.85))
                     .padding(6)
@@ -137,46 +137,46 @@ public struct GoalsView: View {
 
     private func newGoalCard() -> some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("New Goal")
+            Text(config.language.localized(.newGoalTitle))
                 .font(.system(size: 13, weight: .bold))
                 .foregroundColor(.white)
 
-            TextField("Goal Title (e.g. Battery Sentinel)", text: $vm.newTitle)
+            TextField(config.language.localized(.goalTitlePlaceholder), text: $vm.newTitle)
                 .textFieldStyle(.plain)
                 .padding(8)
                 .background(RoundedRectangle(cornerRadius: 8).fill(Color.white.opacity(0.1)))
                 .foregroundColor(.white)
 
-            TextField("Prompt instruction for Gemini...", text: $vm.newPrompt)
+            TextField(config.language.localized(.goalPromptPlaceholder), text: $vm.newPrompt)
                 .textFieldStyle(.plain)
                 .padding(8)
                 .background(RoundedRectangle(cornerRadius: 8).fill(Color.white.opacity(0.1)))
                 .foregroundColor(.white)
 
             HStack {
-                Text("Interval:")
+                Text(config.language.localized(.intervalLabel))
                     .font(.system(size: 11))
                     .foregroundColor(.white.opacity(0.8))
 
                 Picker("", selection: $vm.newIntervalMinutes) {
-                    Text("5 min").tag(5.0)
-                    Text("15 min").tag(15.0)
-                    Text("30 min").tag(30.0)
-                    Text("1 hour").tag(60.0)
+                    Text(config.language.everyMinutes(5)).tag(5.0)
+                    Text(config.language.everyMinutes(15)).tag(15.0)
+                    Text(config.language.everyMinutes(30)).tag(30.0)
+                    Text(config.language == .russian ? "1 час" : "1 hour").tag(60.0)
                 }
                 .pickerStyle(.menu)
                 .labelsHidden()
 
                 Spacer()
 
-                Button("Cancel") {
+                Button(config.language.localized(.cancelButton)) {
                     vm.isAddingNewGoal = false
                 }
                 .buttonStyle(.plain)
                 .foregroundColor(.white.opacity(0.6))
                 .font(.system(size: 11))
 
-                Button("Save") {
+                Button(config.language.localized(.saveButton)) {
                     vm.saveNewGoal()
                 }
                 .buttonStyle(.plain)

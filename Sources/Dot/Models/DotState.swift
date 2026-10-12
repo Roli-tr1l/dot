@@ -71,7 +71,12 @@ public class DotState: ObservableObject {
             withAnimation(.spring(response: 0.4, dampingFraction: 0.6)) {
                 mood = .idle
             }
-            showSpeechBubble("Hey! I'm awake! 👋", duration: 2.0)
+            let wakeText: String
+            switch DotConfig.shared.language {
+            case .russian: wakeText = "Я тут и готов помочь! 👋"
+            default: wakeText = "Hey! I'm awake! 👋"
+            }
+            showSpeechBubble(wakeText, duration: 2.0)
         }
     }
 
@@ -134,20 +139,11 @@ public class DotState: ObservableObject {
         }
     }
 
-    private func loadDefaultGoals() {
-        self.goals = [
-            TaskGoal(
-                title: "Mac Battery Sentinel",
-                prompt: "Check battery percentage. If below 20% and not charging, warn the user.",
-                intervalSeconds: 600,
-                isEnabled: false
-            ),
-            TaskGoal(
-                title: "Desk Break & Posture Check",
-                prompt: "Remind the user to stretch, blink, and take a sip of water.",
-                intervalSeconds: 3600,
-                isEnabled: false
-            )
-        ]
+    public func loadDefaultGoals() {
+        self.goals = DotConfig.shared.language.defaultGoals()
+    }
+
+    public func updateGoalsLanguage(_ lang: DotLanguage) {
+        self.goals = lang.defaultGoals()
     }
 }

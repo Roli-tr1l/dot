@@ -21,7 +21,8 @@ public class AppDelegate: NSObject, NSApplicationDelegate {
         // Initial Greeting
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
             DotState.shared.wakeUp()
-            DotState.shared.showSpeechBubble("Hi! Dot is online! ✨", duration: 3.0)
+            let greeting = DotConfig.shared.language == .russian ? "Привет! Dot онлайн! ✨" : "Hi! Dot is online! ✨"
+            DotState.shared.showSpeechBubble(greeting, duration: 3.0)
             SpeechService.shared.playWakeupSound()
         }
     }
@@ -35,32 +36,71 @@ public class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         let menu = NSMenu()
+        let lang = DotConfig.shared.language
 
-        let toggleItem = NSMenuItem(title: "Toggle Dot Avatar", action: #selector(toggleAvatar), keyEquivalent: "d")
+        let toggleTitle: String
+        let chatTitle: String
+        let screenTitle: String
+        let goalsTitle: String
+        let prefTitle: String
+        let quitTitle: String
+
+        switch lang {
+        case .russian:
+            toggleTitle = "Показать/Скрыть Dot"
+            chatTitle = "Открыть чат и инструменты"
+            screenTitle = "Снимок экрана"
+            goalsTitle = "Автономные цели"
+            prefTitle = "Настройки..."
+            quitTitle = "Выйти из Dot"
+        case .chinese:
+            toggleTitle = "显示/隐藏 Dot"
+            chatTitle = "打开聊天与工具"
+            screenTitle = "截取屏幕"
+            goalsTitle = "自主常驻目标"
+            prefTitle = "偏好设置..."
+            quitTitle = "退出 Dot"
+        case .japanese:
+            toggleTitle = "Dotの表示/非表示"
+            chatTitle = "チャットとツールを開く"
+            screenTitle = "画面をキャプチャ"
+            goalsTitle = "自律目標"
+            prefTitle = "環境設定..."
+            quitTitle = "Dot を終了"
+        default:
+            toggleTitle = "Toggle Dot Avatar"
+            chatTitle = "Open Chat & Tools"
+            screenTitle = "Capture Screen"
+            goalsTitle = "Autonomous Goals"
+            prefTitle = "Preferences..."
+            quitTitle = "Quit Dot"
+        }
+
+        let toggleItem = NSMenuItem(title: toggleTitle, action: #selector(toggleAvatar), keyEquivalent: "d")
         toggleItem.target = self
         menu.addItem(toggleItem)
 
-        let chatItem = NSMenuItem(title: "Open Chat & Tools", action: #selector(openChat), keyEquivalent: "c")
+        let chatItem = NSMenuItem(title: chatTitle, action: #selector(openChat), keyEquivalent: "c")
         chatItem.target = self
         menu.addItem(chatItem)
 
-        let screenItem = NSMenuItem(title: "Capture Screen", action: #selector(captureScreen), keyEquivalent: "s")
+        let screenItem = NSMenuItem(title: screenTitle, action: #selector(captureScreen), keyEquivalent: "s")
         screenItem.target = self
         menu.addItem(screenItem)
 
-        let goalsItem = NSMenuItem(title: "Autonomous Goals", action: #selector(openGoals), keyEquivalent: "g")
+        let goalsItem = NSMenuItem(title: goalsTitle, action: #selector(openGoals), keyEquivalent: "g")
         goalsItem.target = self
         menu.addItem(goalsItem)
 
         menu.addItem(NSMenuItem.separator())
 
-        let prefItem = NSMenuItem(title: "Preferences...", action: #selector(openPreferences), keyEquivalent: ",")
+        let prefItem = NSMenuItem(title: prefTitle, action: #selector(openPreferences), keyEquivalent: ",")
         prefItem.target = self
         menu.addItem(prefItem)
 
         menu.addItem(NSMenuItem.separator())
 
-        let quitItem = NSMenuItem(title: "Quit Dot", action: #selector(quitApp), keyEquivalent: "q")
+        let quitItem = NSMenuItem(title: quitTitle, action: #selector(quitApp), keyEquivalent: "q")
         quitItem.target = self
         menu.addItem(quitItem)
 
